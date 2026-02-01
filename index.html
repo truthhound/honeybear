@@ -2,147 +2,162 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Valentine for Honeybear 🐻💝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Will you be my Valentine? 💝</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    html, body {
-      max-width: 100%;
-      overflow-x: hidden;
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
+    body {
       margin: 0;
       padding: 0;
+      width: 100vw;
       min-height: 100vh;
-      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="font-size:20px"><text y="18">🍯</text></svg>'), auto;
-    }
-
-    body {
       background: url('https://i.ibb.co/4RH0MBZ8/IMG-0701.jpg') center/cover no-repeat fixed;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      color: #fff;
-      position: relative;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
       text-align: center;
+      overflow-x: hidden;
     }
 
-    body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(189, 21, 80, 0.45); 
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(189, 21, 80, 0.4);
       z-index: 1;
     }
 
-    .container {
+    .content {
       position: relative;
       z-index: 2;
       padding: 20px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      font-size: clamp(2.5em, 8vw, 4.5em);
-      color: #ffeb3b;
-      text-shadow: 0 0 20px rgba(255, 235, 59, 0.7);
-      margin-top: 30px;
-      animation: heartbeat 1.5s infinite;
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    /* Love Meter */
-    .meter-container {
-      width: 200px;
-      height: 20px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 10px;
-      margin: 10px auto;
-      overflow: hidden;
-      border: 2px solid #fff;
-    }
-    #meter-fill {
-      width: 0%;
-      height: 100%;
-      background: #ffeb3b;
-      transition: width 0.3s;
-    }
-
-    .button-box {
-      position: relative;
-      width: 100%;
-      height: 350px;
-      margin-top: 20px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
     }
 
+    h1 { font-size: 2.2em; color: #ffeb3b; margin: 20px 0 10px; text-shadow: 2px 2px 12px rgba(0,0,0,0.7); }
+    #questionText { font-size: 1.4em; margin-bottom: 20px; font-weight: bold; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
+
+    .game-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 380px; 
+      margin: 0 auto;
+    }
+
     button {
-      font-size: 1.4em;
-      padding: 18px 45px;
+      padding: 18px 40px;
+      font-size: 1.2em;
+      font-weight: bold;
       border: none;
       border-radius: 50px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
       cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* Heartbeat animation for Yes button */
+    @keyframes heartbeat {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    #yesBtn {
+      background: #e91e63;
+      color: white;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      animation: heartbeat 1.2s infinite;
+    }
+
+    #noBtn {
+      background: white;
+      color: #e91e63;
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      white-space: nowrap;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    #yesBtn { background: #e91e63; color: white; z-index: 10; position: relative; }
-    #noBtn { background: #555; color: white; position: relative; z-index: 5; margin-left: 20px; }
+    #gallery {
+      display: none;
+      width: 100%;
+      margin-top: 30px;
+      padding-bottom: 100px;
+      animation: fadeInUp 1s ease;
+    }
 
-    /* Floating elements */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 15px;
+    }
+
+    .gallery-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 4px solid white;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+    }
+
     .floating {
       position: fixed;
-      font-size: 2.5em;
+      font-size: 1.8em;
       pointer-events: none;
       z-index: 1;
       animation: floatUp 6s linear forwards;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-      20% { opacity: 1; }
-      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+      from { transform: translateY(110vh); opacity: 1; }
+      to { transform: translateY(-15vh); opacity: 0; }
     }
-
-    #gallery { display: none; margin-top: 30px; padding-bottom: 80px; }
-    .gallery-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-    .gallery-img {
-      width: 200px; height: 200px; object-fit: cover;
-      border-radius: 20px; border: 5px solid white;
-      transition: transform 0.3s;
-    }
-    .gallery-img:hover { transform: rotate(3deg) scale(1.05); }
 
     #music-toggle {
-      position: fixed; bottom: 20px; right: 20px;
-      background: rgba(0,0,0,0.7); color: white;
-      padding: 12px 25px; border-radius: 50px;
-      border: none; cursor: pointer; z-index: 100;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 25px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-<div id="float-container"></div>
+<div class="overlay"></div>
 
-<div class="container">
-  <h1>For Christopher Pat 🐻</h1>
-  <p style="font-size: 1.4em;">The "I Love You" Meter:</p>
-  <div class="meter-container"><div id="meter-fill"></div></div>
-  
-  <p id="questionText" style="font-size: 2em; font-weight: bold;">Will you be my Valentine? 🌹</p>
-  
-  <div class="button-box" id="buttonContainer">
+<div class="content">
+  <h1>Christopher Pat honeybear 🐻</h1>
+  <p id="questionText">Will you be my Valentine? 🌹❤️</p>
+
+  <div class="game-container" id="gameArea">
     <button id="yesBtn" onclick="yesClick()">YES! 😍</button>
     <button id="noBtn">No 😢</button>
   </div>
 
   <div id="gallery">
-    <h2 style="font-size: 2.5em; color: #ffeb3b;">YAYYY! Honeybear is mine! 💍✨</h2>
+    <h2 style="color: #ffeb3b; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Yayyyy! Look at us 📸✨</h2>
     <div class="gallery-grid">
       <img class="gallery-img" src="https://i.ibb.co/B2GBfXQt/IMG-3074.jpg">
       <img class="gallery-img" src="https://i.ibb.co/FLhf1dYY/IMG-3073.jpg">
@@ -154,89 +169,90 @@
 </div>
 
 <button id="music-toggle" onclick="toggleMusic()">🔊 Play Music</button>
-<audio id="bgMusic" loop><source src="https://assets.codepen.io/438780/love-alex-productions.mp3" type="audio/mpeg"></audio>
+<audio id="bgMusic" loop src="https://assets.codepen.io/438780/love-alex-productions.mp3"></audio>
 
 <script>
   const noBtn = document.getElementById('noBtn');
   const yesBtn = document.getElementById('yesBtn');
-  const meter = document.getElementById('meter-fill');
+  const gameArea = document.getElementById('gameArea');
   const questionText = document.getElementById('questionText');
+  const gallery = document.getElementById('gallery');
   let attempts = 0;
 
-  const phrases = ["Sure?", "Really?", "Honeybear pls", "Wrong one!", "Try harder!", "Missed me!", "Still no?", "Giving up?", "Almost there!", "YES is better!"];
+  const phrases = ["Sure?", "Really?", "Don't do it!", "Wrong one!", "Over here!", "Try again!", "You can't catch me!", "Opps!", "Closer!", "Just say yes!"];
 
-  function moveNoButton() {
+  function moveNo(e) {
+    if(e) e.preventDefault();
     attempts++;
-    noBtn.style.position = 'absolute';
     
-    // Random movement within button box
-    const x = Math.random() * 80;
-    const y = Math.random() * 80;
-    noBtn.style.left = x + '%';
-    noBtn.style.top = y + '%';
+    const maxX = gameArea.clientWidth - noBtn.clientWidth;
+    const maxY = gameArea.clientHeight - noBtn.clientHeight;
+
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+
+    noBtn.style.transform = 'none'; 
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
     
-    // Update text and meter
     noBtn.innerText = phrases[Math.min(attempts, phrases.length - 1)];
-    meter.style.width = Math.min(attempts * 10, 100) + '%';
-
-    // Grow Yes button
-    yesBtn.style.transform = `scale(${1 + (attempts * 0.2)})`;
     
-    // Tiny confetti pop on every miss
-    confetti({ particleCount: 10, spread: 30, origin: { x: Math.random(), y: Math.random() }, colors: ['#ffeb3b', '#e91e63'] });
+    // Grow Yes button to make it unavoidable
+    const scale = 1 + (attempts * 0.18);
+    yesBtn.style.transform = `translate(-50%, -50%) scale(${scale})`;
 
-    if (attempts >= 10) {
-      noBtn.innerText = "I give up! 🥰";
-      noBtn.style.background = "#e91e63";
-      noBtn.onclick = yesClick;
-    }
+    if(attempts > 12) noBtn.style.display = 'none';
   }
 
-  noBtn.addEventListener('mouseover', moveNoButton);
-  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); });
+  noBtn.addEventListener('touchstart', moveNo);
+  noBtn.addEventListener('mouseover', moveNo);
 
   function yesClick() {
-    document.getElementById('buttonContainer').style.display = 'none';
-    document.getElementById('gallery').style.display = 'block';
-    questionText.innerHTML = "I love you more than anything! ❤️🐻";
-    
-    // Massive Confetti Explosion
-    var duration = 15 * 1000;
-    var animationEnd = Date.now() + duration;
-    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    // Confetti Burst
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
     function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
-    var interval = setInterval(function() {
-      var timeLeft = animationEnd - Date.now();
-      if (timeLeft <= 0) { return clearInterval(interval); }
-      var particleCount = 50 * (timeLeft / duration);
+    const interval = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+      const particleCount = 50 * (timeLeft / duration);
       confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
       confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
     }, 250);
 
-    // Final Meter Fill
-    meter.style.width = '100%';
-    meter.style.background = '#ff4081';
+    // Update Text to your request
+    gameArea.style.display = 'none';
+    questionText.style.fontSize = "1.6em";
+    questionText.innerHTML = "Before nko? Who you wan leave me for? 😘🐻";
+    gallery.style.display = 'block';
+    
+    // Extra emoji celebration
+    for(let i=0; i<30; i++) setTimeout(spawnEmoji, i * 100);
   }
 
-  // Floating Background Items
-  function createFloatingItem() {
-    const item = document.createElement('div');
-    const icons = ['❤️', '💖', '🐻', '🍯', '🌹', '✨'];
-    item.className = 'floating';
-    item.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-    item.style.left = Math.random() * 100 + 'vw';
-    document.getElementById('float-container').appendChild(item);
-    setTimeout(() => item.remove(), 6000);
+  function spawnEmoji() {
+    const emojis = ['❤️', '💖', '🐻', '🍯', '✨', '🌸'];
+    const div = document.createElement('div');
+    div.className = 'floating';
+    div.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+    div.style.left = Math.random() * 95 + 'vw';
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 6000);
   }
-  setInterval(createFloatingItem, 600);
+  setInterval(spawnEmoji, 1200);
 
-  // Music Logic
   const music = document.getElementById('bgMusic');
   function toggleMusic() {
-    if (music.paused) { music.play(); document.getElementById('music-toggle').innerText = "🔇 Mute"; }
-    else { music.pause(); document.getElementById('music-toggle').innerText = "🔊 Music"; }
+    if (music.paused) {
+      music.play();
+      document.getElementById('music-toggle').innerText = "🔇 Mute";
+    } else {
+      music.pause();
+      document.getElementById('music-toggle').innerText = "🔊 Play Music";
+    }
   }
 </script>
 
