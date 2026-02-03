@@ -2,259 +2,232 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Will you be my Valentine? 💝</title>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minion asks: Be My Valentine?! 🍌💛</title>
   <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    
     body {
       margin: 0;
-      padding: 0;
-      width: 100vw;
-      min-height: 100vh;
-      background: url('https://i.ibb.co/4RH0MBZ8/IMG-0701.jpg') center/cover no-repeat fixed;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(189, 21, 80, 0.4);
-      z-index: 1;
-    }
-
-    .content {
-      position: relative;
-      z-index: 2;
-      padding: 20px;
+      height: 100vh;
+      background: linear-gradient(135deg, #fff176, #ffe082, #ffecb3);
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      color: #212121;
+      transition: background 1.5s;
     }
-
-    h1 { font-size: 2.2em; color: #ffeb3b; margin: 20px 0 10px; text-shadow: 2px 2px 12px rgba(0,0,0,0.7); }
-    #questionText { font-size: 1.4em; margin-bottom: 20px; font-weight: bold; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); }
-
-    .game-container {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      height: 380px; 
-      margin: 0 auto;
+    h1 {
+      font-size: 4.5rem;
+      color: #000;
+      text-shadow: 5px 5px 0 #fff, 8px 8px 0 #000;
+      margin: 20px 0 30px;
+      text-align: center;
+      line-height: 1.1;
+      animation: wiggle 2s infinite;
     }
-
-    button {
-      padding: 18px 40px;
-      font-size: 1.2em;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-      cursor: pointer;
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      width: 90%;
+      max-width: 420px;
     }
-
-    /* Heartbeat animation for Yes button */
-    @keyframes heartbeat {
-      0% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.1); }
-      100% { transform: translate(-50%, -50%) scale(1); }
-    }
-
-    #yesBtn {
-      background: #e91e63;
-      color: white;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      animation: heartbeat 1.2s infinite;
-    }
-
-    #noBtn {
-      background: white;
-      color: #e91e63;
-      position: absolute;
-      top: 70%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 5;
-      white-space: nowrap;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    #gallery {
-      display: none;
-      width: 100%;
-      margin-top: 30px;
-      padding-bottom: 100px;
-      animation: fadeInUp 1s ease;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 15px;
-    }
-
-    .gallery-img {
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-      border-radius: 20px;
-      border: 4px solid white;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.4);
-    }
-
-    .floating {
-      position: fixed;
-      font-size: 1.8em;
-      pointer-events: none;
-      z-index: 1;
-      animation: floatUp 6s linear forwards;
-    }
-
-    @keyframes floatUp {
-      from { transform: translateY(110vh); opacity: 1; }
-      to { transform: translateY(-15vh); opacity: 0; }
-    }
-
-    #music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 100;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      border: none;
-      padding: 12px 18px;
+    .minion-img, .extra-gif {
+      width: 320px;
+      max-width: 80vw;
       border-radius: 25px;
+      box-shadow: 0 12px 50px rgba(0,0,0,0.4);
+      transition: opacity 0.6s ease-out;
+    }
+    .dance-vid-container {
+      width: 384px;
+      height: 480px;
+      max-width: 90vw;
+      display: none;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+    }
+    .dance-vid-container iframe {
+      width: 100%;
+      height: 100%;
+    }
+    .buttons {
+      display: flex;
+      gap: 160px;
+      position: relative;
+      margin: 30px 0;
+    }
+    button {
+      font-size: 3rem;
+      padding: 28px 90px;
+      border: 10px solid #000;
+      border-radius: 999px;
+      cursor: pointer;
       font-weight: bold;
+      transition: all 0.3s;
+      box-shadow: 0 14px 0 #000;
+    }
+    #yes {
+      background: #4caf50;
+      color: white;
+    }
+    #yes:hover { transform: scale(1.15) rotate(5deg); }
+    #no {
+      background: #f44336;
+      color: white;
+    }
+    #confetti-canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-6deg); }
+      50%     { transform: rotate(6deg); }
     }
   </style>
 </head>
 <body>
 
-<div class="overlay"></div>
-
-<div class="content">
-  <h1>Christopher Pat honeybear 🐻</h1>
-  <p id="questionText">Will you be my Valentine? 🌹❤️</p>
-
-  <div class="game-container" id="gameArea">
-    <button id="yesBtn" onclick="yesClick()">YES! 😍</button>
-    <button id="noBtn">No 😢</button>
-  </div>
-
-  <div id="gallery">
-    <h2 style="color: #ffeb3b; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Yayyyy! Look at us 📸✨</h2>
-    <div class="gallery-grid">
-      <img class="gallery-img" src="https://i.ibb.co/B2GBfXQt/IMG-3074.jpg">
-      <img class="gallery-img" src="https://i.ibb.co/FLhf1dYY/IMG-3073.jpg">
-      <img class="gallery-img" src="https://i.ibb.co/tMZWMRj1/IMG-3072.jpg">
-      <img class="gallery-img" src="https://i.ibb.co/1G6XPych/IMG-3069.jpg">
-      <img class="gallery-img" src="https://i.ibb.co/Ghc1p6s/IMG-3068.jpg">
+  <h1 id="title">WILL YOU BE<br>MY VALENTINE?! 🍌🥺💕</h1>
+  
+  <div class="container" id="container">
+    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmpqMHNvMGk4ZmY3bWZpdXF4cHV5N2N4dnE5dnoxZWE1NnRzYWZrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dL86xSgxaQSfvfTENV/giphy.gif" 
+         alt="Minion" class="minion-img" id="minionGif">
+    <div class="extra-gif" id="extraGif">
+      <div style="width:100%;height:0;padding-bottom:54%;position:relative;">
+        <iframe src="https://giphy.com/embed/aZ4sQUpybai5y" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+      </div>
+    </div>
+    <div class="dance-vid-container" id="danceVid">
+      <iframe src="https://giphy.com/embed/bLr9BkqQTfv51XH7Ej" width="384" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
     </div>
   </div>
-</div>
 
-<button id="music-toggle" onclick="toggleMusic()">🔊 Play Music</button>
-<audio id="bgMusic" loop src="https://assets.codepen.io/438780/love-alex-productions.mp3"></audio>
+  <div class="buttons" id="buttons">
+    <button id="yes">YES BANANA!! 💛🥳</button>
+    <button id="no">NO 😭</button>
+  </div>
 
-<script>
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
-  const gameArea = document.getElementById('gameArea');
-  const questionText = document.getElementById('questionText');
-  const gallery = document.getElementById('gallery');
-  let attempts = 0;
+  <canvas id="confetti-canvas"></canvas>
 
-  const phrases = ["Sure?", "Really?", "Don't do it!", "Wrong one!", "Over here!", "Try again!", "You can't catch me!", "Opps!", "Closer!", "Just say yes!"];
+  <script>
+    const title = document.getElementById('title');
+    const yesBtn = document.getElementById('yes');
+    const noBtn = document.getElementById('no');
+    const minionGif = document.getElementById('minionGif');
+    const extraGif = document.getElementById('extraGif');
+    const danceVid = document.getElementById('danceVid');
+    const buttonsDiv = document.getElementById('buttons');
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
 
-  function moveNo(e) {
-    if(e) e.preventDefault();
-    attempts++;
-    
-    const maxX = gameArea.clientWidth - noBtn.clientWidth;
-    const maxY = gameArea.clientHeight - noBtn.clientHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
 
-    const newX = Math.random() * maxX;
-    const newY = Math.random() * maxY;
+    // Simple confetti particle system
+    let particles = [];
 
-    noBtn.style.transform = 'none'; 
-    noBtn.style.left = newX + 'px';
-    noBtn.style.top = newY + 'px';
-    
-    noBtn.innerText = phrases[Math.min(attempts, phrases.length - 1)];
-    
-    // Grow Yes button to make it unavoidable
-    const scale = 1 + (attempts * 0.18);
-    yesBtn.style.transform = `translate(-50%, -50%) scale(${scale})`;
-
-    if(attempts > 12) noBtn.style.display = 'none';
-  }
-
-  noBtn.addEventListener('touchstart', moveNo);
-  noBtn.addEventListener('mouseover', moveNo);
-
-  function yesClick() {
-    // Confetti Burst
-    const duration = 5 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-    function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-    const interval = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-      if (timeLeft <= 0) return clearInterval(interval);
-      const particleCount = 50 * (timeLeft / duration);
-      confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-      confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-    }, 250);
-
-    // Update Text to your request
-    gameArea.style.display = 'none';
-    questionText.style.fontSize = "1.6em";
-    questionText.innerHTML = "Before nko? Who you wan leave me for? 😘🐻";
-    gallery.style.display = 'block';
-    
-    // Extra emoji celebration
-    for(let i=0; i<30; i++) setTimeout(spawnEmoji, i * 100);
-  }
-
-  function spawnEmoji() {
-    const emojis = ['❤️', '💖', '🐻', '🍯', '✨', '🌸'];
-    const div = document.createElement('div');
-    div.className = 'floating';
-    div.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
-    div.style.left = Math.random() * 95 + 'vw';
-    document.body.appendChild(div);
-    setTimeout(() => div.remove(), 6000);
-  }
-  setInterval(spawnEmoji, 1200);
-
-  const music = document.getElementById('bgMusic');
-  function toggleMusic() {
-    if (music.paused) {
-      music.play();
-      document.getElementById('music-toggle').innerText = "🔇 Mute";
-    } else {
-      music.pause();
-      document.getElementById('music-toggle').innerText = "🔊 Play Music";
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = -20;
+        this.size = Math.random() * 8 + 4;
+        this.speedY = Math.random() * 5 + 3;
+        this.speedX = Math.random() * 4 - 2;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 10 - 5;
+        this.color = `hsl(${Math.random() * 360}, 90%, 60%)`;
+        this.opacity = 1;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotationSpeed;
+        this.opacity -= 0.008;
+        if (this.opacity <= 0 || this.y > canvas.height + 50) {
+          this.reset();
+        }
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+        ctx.restore();
+      }
     }
-  }
-</script>
+
+    // Pre-create particles
+    for (let i = 0; i < 180; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+    animateConfetti();
+
+    // NO button runs away
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const x = Math.random() * 900 - 450;
+      const y = Math.random() * 700 - 350;
+      noBtn.style.transform = `translate(${x}px, ${y}px) scale(0.7) rotate(${Math.random()*80-40}deg)`;
+      noBtn.innerHTML = ['PLEEEEASE? 🥺', 'NOOO DON\'T 😭🍌', 'PRETTY PLEASE???', 'MINION SAD 💔'][Math.floor(Math.random()*4)];
+      setTimeout(() => { noBtn.innerHTML = "NO 😭"; }, 1200);
+    });
+
+    // YES → instant celebration with confetti + only dance video
+    yesBtn.addEventListener('click', () => {
+      document.body.style.background = "linear-gradient(135deg, #ffeb3b, #ff5722, #e91e63, #9c27b0)";
+
+      title.innerHTML = "YAY!! YOU'RE MY VALENTINE!! 🥳💛💕";
+
+      // Hide other elements
+      minionGif.style.opacity = '0';
+      extraGif.style.opacity = '0';
+      buttonsDiv.style.opacity = '0';
+      setTimeout(() => {
+        minionGif.style.display = 'none';
+        extraGif.style.display = 'none';
+        buttonsDiv.style.display = 'none';
+      }, 600);
+
+      // Show dance video
+      danceVid.style.display = 'block';
+
+      // Trigger big confetti burst
+      for (let i = 0; i < particles.length; i++) {
+        setTimeout(() => {
+          particles[i].y = -20 - Math.random() * 200;
+          particles[i].opacity = 1;
+          particles[i].speedY = Math.random() * 8 + 6;
+          particles[i].speedX = Math.random() * 6 - 3;
+        }, i * 4);
+      }
+    });
+  </script>
 
 </body>
 </html>
