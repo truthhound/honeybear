@@ -2,169 +2,273 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Minion asks: Be My Valentine?! 🍌💛</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #fff176, #ffe082, #ffecb3);
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #212121;
-      transition: background 1.5s;
+    :root{
+      --bg-1: #fff176;
+      --bg-2: #ffe082;
+      --accent: #000;
+      --radius: 20px;
+      --button-border: 8px;
+      --shadow: 0 12px 50px rgba(0,0,0,0.35);
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
     }
-    h1 {
-      font-size: 4.5rem;
-      color: #000;
-      text-shadow: 5px 5px 0 #fff, 8px 8px 0 #000;
-      margin: 20px 0 30px;
-      text-align: center;
-      line-height: 1.1;
+
+    /* Mobile-first */
+    html,body{
+      height:100%;
+      margin:0;
+      padding: max(12px, var(--safe-top)) 12px max(16px, var(--safe-bottom));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      font-family: "Comic Sans MS", "Comic Neue", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color:#212121;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap:18px;
+      min-height:100vh;
+      box-sizing:border-box;
+      transition: background 1s ease;
+      overflow-x:hidden;
+    }
+
+    /* Title scales nicely on different screens */
+    h1{
+      margin: 6px 0 8px;
+      font-weight:800;
+      text-align:center;
+      line-height:1.05;
+      color:var(--accent);
+      -webkit-text-stroke: 0.5px #fff;
+      text-shadow: 4px 4px 0 #fff, 6px 6px 0 #000;
+      font-size: clamp(1.6rem, 6vw, 3.2rem);
+      transform-origin:center;
       animation: wiggle 2s infinite;
+      padding: 2px 8px;
     }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      width: 90%;
-      max-width: 420px;
+
+    .container{
+      width:100%;
+      max-width:520px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:16px;
     }
-    .minion-img, .extra-gif {
-      width: 320px;
-      max-width: 80vw;
-      border-radius: 25px;
-      box-shadow: 0 12px 50px rgba(0,0,0,0.4);
-      transition: opacity 0.6s ease-out;
+
+    .media-card{
+      width:100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.35));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
     }
-    .dance-vid-container {
-      width: 384px;
-      height: 480px;
-      max-width: 90vw;
-      display: none;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+
+    img.minion-img, .gif-wrap, .dance-vid-container{
+      width:100%;
+      display:block;
+      border-radius: 14px;
+      max-height: 60vh;
+      object-fit:cover;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
     }
-    .dance-vid-container iframe {
-      width: 100%;
-      height: 100%;
+
+    /* Responsive iframe wrapper keeping aspect ratio */
+    .gif-wrap{
+      position:relative;
+      padding-bottom:56.25%;
+      height:0;
     }
-    .buttons {
-      display: flex;
-      gap: 160px;
-      position: relative;
-      margin: 30px 0;
+    .gif-wrap iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
     }
-    button {
-      font-size: 3rem;
-      padding: 28px 90px;
-      border: 10px solid #000;
+
+    .dance-vid-container{
+      display:none; /* shown when YES clicked */
+      aspect-ratio: 3/4;
+      max-width:420px;
+    }
+
+    /* Buttons: stacked on small, side-by-side on larger */
+    .buttons{
+      width:100%;
+      max-width:520px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    .buttons button{
+      flex: 1 1 100%;
+      min-width:160px;
+      padding: 16px 12px;
       border-radius: 999px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s;
-      box-shadow: 0 14px 0 #000;
+      border: var(--button-border) solid #000;
+      font-size: clamp(1.05rem, 4vw, 1.4rem);
+      font-weight:800;
+      box-shadow: 0 10px 0 #000;
+      cursor:pointer;
+      touch-action: manipulation;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .2s ease;
     }
-    #yes {
-      background: #4caf50;
-      color: white;
+
+    .buttons button:active{ transform: translateY(2px) scale(0.995); box-shadow:0 6px 0 #000; }
+
+    #yes{
+      background: linear-gradient(180deg,#66bb6a,#43a047);
+      color:white;
     }
-    #yes:hover { transform: scale(1.15) rotate(5deg); }
-    #no {
-      background: #f44336;
-      color: white;
+    #no{
+      background: linear-gradient(180deg,#ef5350,#e53935);
+      color:white;
     }
-    #confetti-canvas {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 5;
+
+    /* Larger screens: place buttons side-by-side */
+    @media (min-width:640px){
+      .buttons button{ flex:1 1 48%; min-width:180px; padding:18px 24px; font-size:1.35rem;}
+      h1{font-size: clamp(2.2rem, 5vw, 4.5rem);}
+      .container{gap:22px;}
+    }
+
+    /* Confetti canvas sits on top, but is pointer-events: none */
+    #confetti-canvas{
+      position:fixed;
+      inset:0;
+      width:100vw;
+      height:100vh;
+      pointer-events:none;
+      z-index:999;
+      mix-blend-mode: normal;
     }
 
     @keyframes wiggle {
       0%,100% { transform: rotate(-6deg); }
       50%     { transform: rotate(6deg); }
     }
+
+    /* Respect reduce motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      #confetti-canvas{ display:none; }
+    }
+
+    /* Small utility */
+    .sr-only{ position:absolute; left:-9999px; width:1px; height:1px; top:auto; overflow:hidden; }
   </style>
 </head>
 <body>
 
   <h1 id="title">WILL YOU BE<br>MY VALENTINE?! 🍌🥺💕</h1>
-  
+
   <div class="container" id="container">
-    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmpqMHNvMGk4ZmY3bWZpdXF4cHV5N2N4dnE5dnoxZWE1NnRzYWZrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dL86xSgxaQSfvfTENV/giphy.gif" 
-         alt="Minion" class="minion-img" id="minionGif">
-    <div class="extra-gif" id="extraGif">
-      <div style="width:100%;height:0;padding-bottom:54%;position:relative;">
-        <iframe src="https://giphy.com/embed/aZ4sQUpybai5y" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-      </div>
+    <div class="media-card" aria-hidden="false">
+      <img id="minionGif" class="minion-img" alt="Happy Minion gif" loading="lazy"
+        src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmpqMHNvMGk4ZmY3bWZpdXF4cHV5N2N4dnE5dnoxZWE1NnRzYWZrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dL86xSgxaQSfvfTENV/giphy.gif">
     </div>
-    <div class="dance-vid-container" id="danceVid">
-      <iframe src="https://giphy.com/embed/bLr9BkqQTfv51XH7Ej" width="384" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
+    <div class="media-card gif-wrap" id="extraGif" aria-hidden="true" style="display:block;">
+      <iframe src="https://giphy.com/embed/aZ4sQUpybai5y" class="giphy-embed" allowFullScreen title="extra animated gif"></iframe>
+    </div>
+
+    <div class="media-card dance-vid-container" id="danceVid" aria-hidden="true">
+      <iframe src="https://giphy.com/embed/bLr9BkqQTfv51XH7Ej" class="giphy-embed" allowFullScreen title="dance video"></iframe>
     </div>
   </div>
 
-  <div class="buttons" id="buttons">
-    <button id="yes">YES BANANA!! 💛🥳</button>
-    <button id="no">NO 😭</button>
+  <div class="buttons" id="buttons" role="group" aria-label="Valentine choices">
+    <button id="yes" aria-label="Yes, I'll be your valentine!">YES BANANA!! 💛🥳</button>
+    <button id="no" aria-label="No, I won't">NO 😭</button>
   </div>
 
-  <canvas id="confetti-canvas"></canvas>
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
   <script>
+    // Elements
     const title = document.getElementById('title');
     const yesBtn = document.getElementById('yes');
-    const noBtn = document.getElementById('no');
+    const noBtn  = document.getElementById('no');
     const minionGif = document.getElementById('minionGif');
     const extraGif = document.getElementById('extraGif');
     const danceVid = document.getElementById('danceVid');
     const buttonsDiv = document.getElementById('buttons');
     const canvas = document.getElementById('confetti-canvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext ? canvas.getContext('2d') : null;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    // Responsive particle count: fewer on small screens for performance
+    function recommendedParticleCount() {
+      const w = Math.min(window.innerWidth, 900);
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 0;
+      if (w < 420) return 70;
+      if (w < 720) return 120;
+      return 180;
+    }
 
-    // Simple confetti particle system
     let particles = [];
+    let animating = true;
+    let rafId = null;
 
+    // Setup canvas size
+    function resizeCanvas() {
+      canvas.width = window.innerWidth * devicePixelRatio;
+      canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      if (ctx) ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      // adjust particle count when screen size changes
+      createParticles();
+    });
+    window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 300));
+
+    // Particle class optimized for mobile
     class Particle {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = -20;
-        this.size = Math.random() * 8 + 4;
-        this.speedY = Math.random() * 5 + 3;
-        this.speedX = Math.random() * 4 - 2;
+      constructor() { this.reset(true); }
+      reset(init=false) {
+        const W = window.innerWidth, H = window.innerHeight;
+        this.x = Math.random() * W;
+        this.y = (init ? Math.random()*H : -10 - Math.random()*200);
+        this.size = Math.random() * 8 + 3;
+        const baseSpeed = (W < 420) ? 3 : 5;
+        this.speedY = Math.random() * baseSpeed + (W < 420 ? 1.5 : 3);
+        this.speedX = Math.random() * 6 - 3;
         this.rotation = Math.random() * 360;
-        this.rotationSpeed = Math.random() * 10 - 5;
-        this.color = `hsl(${Math.random() * 360}, 90%, 60%)`;
-        this.opacity = 1;
+        this.rotationSpeed = Math.random() * 8 - 4;
+        this.color = `hsl(${Math.random() * 360}, 92%, ${Math.random()*20+40}%)`;
+        this.opacity = Math.random() * 0.6 + 0.4;
       }
       update() {
         this.y += this.speedY;
         this.x += this.speedX;
         this.rotation += this.rotationSpeed;
-        this.opacity -= 0.008;
-        if (this.opacity <= 0 || this.y > canvas.height + 50) {
-          this.reset();
+        this.opacity -= 0.003;
+        if (this.y > window.innerHeight + 40 || this.opacity <= 0 || this.x < -60 || this.x > window.innerWidth + 60) {
+          this.reset(false);
         }
       }
       draw() {
+        if (!ctx) return;
         ctx.save();
-        ctx.globalAlpha = this.opacity;
+        ctx.globalAlpha = Math.max(0, this.opacity);
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation * Math.PI / 180);
         ctx.fillStyle = this.color;
@@ -173,42 +277,103 @@
       }
     }
 
-    // Pre-create particles
-    for (let i = 0; i < 180; i++) {
-      particles.push(new Particle());
+    function createParticles(){
+      const desired = recommendedParticleCount();
+      if (particles.length > desired) {
+        particles = particles.slice(0, desired);
+      } else {
+        while (particles.length < desired) particles.push(new Particle());
+      }
     }
+    createParticles();
 
-    function animateConfetti() {
+    // Animation loop - respects reduced motion & page visibility
+    function animate() {
+      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateConfetti);
+      for (let p of particles) { p.update(); p.draw(); }
+      if (animating) rafId = requestAnimationFrame(animate);
     }
-    animateConfetti();
+    // Start unless user prefers reduced motion
+    if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      animate();
+    }
 
-    // NO button runs away
-    noBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const x = Math.random() * 900 - 450;
-      const y = Math.random() * 700 - 350;
-      noBtn.style.transform = `translate(${x}px, ${y}px) scale(0.7) rotate(${Math.random()*80-40}deg)`;
-      noBtn.innerHTML = ['PLEEEEASE? 🥺', 'NOOO DON\'T 😭🍌', 'PRETTY PLEASE???', 'MINION SAD 💔'][Math.floor(Math.random()*4)];
-      setTimeout(() => { noBtn.innerHTML = "NO 😭"; }, 1200);
+    // Pause animation when page not visible to save CPU / battery
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        animating = false;
+        if (rafId) cancelAnimationFrame(rafId);
+      } else {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          animating = true;
+          animate();
+        }
+      }
     });
 
-    // YES → instant celebration with confetti + only dance video
+    // NO button: run away but keep movement within viewport safe bounds
+    function moveNoButtonRandomly() {
+      const btnRect = noBtn.getBoundingClientRect();
+      const parentRect = buttonsDiv.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // compute a new center position inside visible area (keeping button fully visible)
+      const maxLeft = Math.max(8, vw - btnRect.width - 8);
+      const maxTop = Math.max(8, vh - btnRect.height - 120);
+      const newLeft = Math.random() * (maxLeft - 8) + 8;
+      const newTop  = Math.random() * (maxTop - 8) + 8;
+      // use transform with translate to avoid layout reflow; set position fixed for the escape
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = `${newLeft}px`;
+      // keep above bottom safe area
+      noBtn.style.top = `${newTop}px`;
+      noBtn.style.transform = `scale(0.95) rotate(${Math.random()*30-15}deg)`;
+      noBtn.style.transition = 'transform .28s ease, left .28s ease, top .28s ease';
+      // temporary playful label changes
+      const texts = ['PLEEEEASE? 🥺','NOOO DON\'T 😭🍌','PRETTY PLEASE???','MINION SAD 💔'];
+      noBtn.textContent = texts[Math.floor(Math.random()*texts.length)];
+      setTimeout(()=> {
+        noBtn.textContent = "NO 😭";
+        // after some time, snap back to normal layout (relative) to work with responsive layouts
+        setTimeout(()=> {
+          noBtn.style.position = '';
+          noBtn.style.left = '';
+          noBtn.style.top = '';
+          noBtn.style.transform = '';
+          noBtn.style.transition = '';
+        }, 1200);
+      }, 1100);
+    }
+
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      moveNoButtonRandomly();
+    }, {passive:true});
+
+    // Also make it respond to touchstart for immediate reaction on phones
+    noBtn.addEventListener('touchstart', (e) => {
+      // small delay to allow click fallback
+      e.preventDefault();
+      moveNoButtonRandomly();
+    }, {passive:false});
+
+    // YES button behavior: quick celebration, show dance video, big confetti burst
     yesBtn.addEventListener('click', () => {
+      // change background palette
       document.body.style.background = "linear-gradient(135deg, #ffeb3b, #ff5722, #e91e63, #9c27b0)";
+      title.textContent = "YAY!! YOU'RE MY VALENTINE!! 🥳💛💕";
 
-      title.innerHTML = "YAY!! YOU'RE MY VALENTINE!! 🥳💛💕";
-
-      // Hide other elements
+      // Hide media and controls gracefully
+      minionGif.style.transition = 'opacity .5s ease';
+      extraGif.style.transition = 'opacity .5s ease';
+      buttonsDiv.style.transition = 'opacity .5s ease, transform .4s ease';
       minionGif.style.opacity = '0';
       extraGif.style.opacity = '0';
       buttonsDiv.style.opacity = '0';
-      setTimeout(() => {
+      buttonsDiv.style.transform = 'translateY(10px) scale(.98)';
+
+      setTimeout(()=>{
         minionGif.style.display = 'none';
         extraGif.style.display = 'none';
         buttonsDiv.style.display = 'none';
@@ -216,17 +381,40 @@
 
       // Show dance video
       danceVid.style.display = 'block';
+      danceVid.style.opacity = '0';
+      danceVid.style.transition = 'opacity .9s ease';
+      setTimeout(()=> danceVid.style.opacity = '1', 80);
 
-      // Trigger big confetti burst
+      // Big confetti burst: temporarily increase particle speed and opacity
       for (let i = 0; i < particles.length; i++) {
         setTimeout(() => {
-          particles[i].y = -20 - Math.random() * 200;
+          particles[i].y = -Math.random() * 300;
           particles[i].opacity = 1;
-          particles[i].speedY = Math.random() * 8 + 6;
-          particles[i].speedX = Math.random() * 6 - 3;
-        }, i * 4);
+          particles[i].speedY = Math.random() * 9 + 6;
+          particles[i].speedX = Math.random() * 8 - 4;
+        }, i * 6);
       }
-    });
+
+      // minor haptic feedback on supporting devices
+      if (navigator.vibrate) navigator.vibrate([20,30,20]);
+    }, {passive:true});
+
+    // Improve accessibility: keyboard handlers
+    yesBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') yesBtn.click(); });
+    noBtn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') noBtn.click(); });
+
+    // initial visual adjustments for small screens
+    (function init() {
+      // On small devices, reduce particle count for battery
+      createParticles();
+      // if reduced motion, stop animating canvas
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        canvas.style.display = 'none';
+      }
+      // keep layout tidy: ensure buttons are visible on small screens
+      window.setTimeout(()=>{ window.scrollTo({top:0,behavior:'smooth'}); }, 120);
+    })();
+
   </script>
 
 </body>
